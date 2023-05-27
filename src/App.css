@@ -179,7 +179,7 @@ div.edit-time {
   flex-direction: row-reverse;
 }
 .edit-time input {
-  padding: 23px;
+  padding: 25px;
   background-image: radial-gradient(
     circle farthest-corner at 10% 20%,
     rgba(100, 43, 115, 1) 0%,
