@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import keyPressSound from '/keyPressSound.mp3' // Import the sound file
-
+import {FaExternalLinkAlt} from "react-icons/fa"
 import './App.css'
 
-const App = React.memo(() => {
+const App = () => {
   const [currentKeyIndex, setCurrentKeyIndex] = useState(0)
   const [correctKeys, setCorrectKeys] = useState(0)
   const [incorrectKeys, setIncorrectKeys] = useState(0)
@@ -71,7 +71,7 @@ const App = React.memo(() => {
 
   return (
     <>
-      <span className="credit">Created By : Santosh Yadav</span>
+     
       <div className="container">
         <h1>
           {' '}
@@ -110,10 +110,10 @@ const App = React.memo(() => {
           </button>
         )}
       </div>
-
+      <span className="credit">Created By : &nbsp;<a href="https://santoshy1101.github.io/" target='blank'> Santosh Yadav  &nbsp; <FaExternalLinkAlt /></a></span>
       <audio ref={audioRef} src={keyPressSound} />
     </>
   )
-})
+}
 
 export default App
