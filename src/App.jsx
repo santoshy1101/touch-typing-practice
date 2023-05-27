@@ -9,7 +9,8 @@ const App = () => {
   const [incorrectKeys, setIncorrectKeys] = useState(0)
   const [timer, setTimer] = useState(0) // 5-minute timer in seconds
   const [seconds, setSeconds] = useState(300)
-  const inputRef = useRef(null)
+  const textRef = useRef(null)
+  const secondsRef = useRef(null)
   const audioRef = useRef(new Audio(keyPressSound)) // Create an Audio object with the sound file
 
   const keysToType = 'asdfjkl;'
@@ -27,12 +28,15 @@ const App = () => {
     if (timer === 0) {
       clearInterval(interval)
       if ((timer === 0 && correctKeys > 0) || incorrectKeys > 0) {
-        inputRef.current.value = 'Time is over...'
+        textRef.current.value = 'Time is over...'
       }
     }
-
-    inputRef.current.focus()
+    textRef.current.focus()
   }, [timer])
+
+  useEffect(() => {
+    secondsRef.current.focus()
+  }, [])
 
   const handleInputChange = (e) => {
     const randomIndex = Math.floor(Math.random() * 8)
@@ -43,10 +47,10 @@ const App = () => {
     if (lastTypedKey === keysToType[currentKeyIndex]) {
       setCorrectKeys((prevCorrectKeys) => prevCorrectKeys + 1)
       setCurrentKeyIndex(randomIndex)
-      inputRef.current.style.backgroundColor = '#37b24d'
+      textRef.current.style.backgroundColor = '#37b24d'
     } else {
       setIncorrectKeys((prevIncorrectKeys) => prevIncorrectKeys + 1)
-      inputRef.current.style.backgroundColor = '#e03131'
+      textRef.current.style.backgroundColor = '#e03131'
     }
 
     e.target.value = lastTypedKey // Override previous input with the new key
@@ -61,9 +65,9 @@ const App = () => {
   }
 
   const restartHandler = (seconds) => {
-    inputRef.current.placeholder = 'Enter next key...'
-    inputRef.current.value = ''
-    inputRef.current.style.backgroundColor = 'black'
+    textRef.current.placeholder = 'Enter next key...'
+    textRef.current.value = ''
+    textRef.current.style.backgroundColor = 'black'
     setCurrentKeyIndex(0)
     setCorrectKeys(0)
     setIncorrectKeys(0)
@@ -85,6 +89,9 @@ const App = () => {
         <p className="timer">Time remaining: {timer > 0 ? timer : 0} seconds</p>
         <p className="correctkeys">Correct keys: {correctKeys}</p>
         <p className="incorrectkeys">Incorrect keys: {incorrectKeys}</p>
+        <p className="totalkeys">
+          Total keys pressed: {correctKeys + incorrectKeys}
+        </p>
         <p className="accuracy">
           Accuracy:{' '}
           {((correctKeys / (correctKeys + incorrectKeys)) * 100 || 0).toFixed(
@@ -98,7 +105,7 @@ const App = () => {
           onChange={handleInputChange}
           autoFocus
           disabled={timer <= 0}
-          ref={inputRef}
+          ref={textRef}
           placeholder="Enter next key..."
         />
 
@@ -112,17 +119,20 @@ const App = () => {
                 : 'START'}
             </button>
             <input
+              ref={secondsRef}
               onKeyUp={(e) => {
                 e.key === 'Enter'
                   ? restartHandler(seconds)
                   : setSeconds(Number(e.target.value))
               }}
-              type="text"
+              type="number"
               placeholder="Enter seconds..."
             />
           </div>
         ) : (
-          <button onClick={() => setTimer(0)}>RESET</button>
+          <button className="reset" onClick={() => setTimer(0)}>
+            RESET
+          </button>
         )}
       </div>
       <span className="credit">
