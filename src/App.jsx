@@ -70,7 +70,7 @@ const App = () => {
   }
 
   return (
-    <>
+    <div className='box'>
      
       <div className="container">
         <h1>
@@ -112,7 +112,7 @@ const App = () => {
       </div>
       <span className="credit">Created By : &nbsp;<a href="https://santoshy1101.github.io/" target='blank'> Santosh Yadav  &nbsp; <FaExternalLinkAlt /></a></span>
       <audio ref={audioRef} src={keyPressSound} />
-    </>
+    </div>
   )
 }
 
