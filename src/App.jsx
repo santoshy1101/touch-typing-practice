@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import keyPressSound from '/keyPressSound.mp3' // Import the sound file
-import {FaExternalLinkAlt} from "react-icons/fa"
+import { FaExternalLinkAlt } from 'react-icons/fa'
 import './App.css'
 
 const App = () => {
@@ -8,6 +8,7 @@ const App = () => {
   const [correctKeys, setCorrectKeys] = useState(0)
   const [incorrectKeys, setIncorrectKeys] = useState(0)
   const [timer, setTimer] = useState(0) // 5-minute timer in seconds
+  const [seconds, setSeconds] = useState(300)
   const inputRef = useRef(null)
   const audioRef = useRef(new Audio(keyPressSound)) // Create an Audio object with the sound file
 
@@ -59,19 +60,18 @@ const App = () => {
     return null
   }
 
-  const restartHandler = () => {
+  const restartHandler = (seconds) => {
     inputRef.current.placeholder = 'Enter next key...'
     inputRef.current.value = ''
     inputRef.current.style.backgroundColor = 'black'
     setCurrentKeyIndex(0)
     setCorrectKeys(0)
     setIncorrectKeys(0)
-    setTimer(300)
+    setTimer(seconds)
   }
 
   return (
-    <div className='box'>
-     
+    <div className="box">
       <div className="container">
         <h1>
           {' '}
@@ -104,13 +104,34 @@ const App = () => {
 
         <p className="next">Next key: {renderNextKey()}</p>
 
-        {timer <= 0 && (
-          <button onClick={restartHandler} className="restart">
-            {(timer <= 0 && correctKeys) || incorrectKeys ? 'RESTART' : 'START'}
-          </button>
+        {timer <= 0 ? (
+          <div className="edit-time">
+            <button onClick={() => restartHandler(seconds)} className="restart">
+              {(timer <= 0 && correctKeys) || incorrectKeys
+                ? 'RESTART'
+                : 'START'}
+            </button>
+            <input
+              onKeyUp={(e) => {
+                e.key === 'Enter'
+                  ? restartHandler(seconds)
+                  : setSeconds(Number(e.target.value))
+              }}
+              type="text"
+              placeholder="Enter seconds..."
+            />
+          </div>
+        ) : (
+          <button onClick={() => setTimer(0)}>RESET</button>
         )}
       </div>
-      <span className="credit">Created By : &nbsp;<a href="https://santoshy1101.github.io/" target='blank'> Santosh Yadav  &nbsp; <FaExternalLinkAlt /></a></span>
+      <span className="credit">
+        Created By : &nbsp;
+        <a href="https://santoshy1101.github.io/" target="blank">
+          {' '}
+          Santosh Yadav &nbsp; <FaExternalLinkAlt />
+        </a>
+      </span>
       <audio ref={audioRef} src={keyPressSound} />
     </div>
   )
