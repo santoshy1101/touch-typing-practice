@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Alata&family=Josefin+Sans:wght@300&family=Poppins:wght@400;500;700&display=swap");
 .box{
   height: 100vh;
+  position: relative;
 }
 .container {
   /* border: 2px solid red; */
@@ -115,7 +116,7 @@ input {
 span.credit {
   display: inline-flex;
   min-width: 300px;
-  position: relative;
+  position: absolute;
   bottom: 0;
   font-family: Poppins;
   color: white;
